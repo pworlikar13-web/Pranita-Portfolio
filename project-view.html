@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pranita Worlikar – Project Gallery View">
+  <title>Project Gallery | Pranita Worlikar</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    .project-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    
+    .back-btn {
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    
+    .back-btn:before {
+      content: "←";
+      margin-right: 8px;
+    }
+    
+    .project-title {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin: 0;
+    }
+    
+    .project-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-gap: 20px;
+    }
+    
+    .gallery-item {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 30px;
+      font-size: 1.2rem;
+      color: var(--primary);
+    }
+    
+    /* Lightbox styles */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+    }
+    
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .project-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-gap: 10px;
+      }
+      
+      .project-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-decoration">
+    <!-- SVG dots and wave background -->
+    <svg class="bg-dots" width="100%" height="100%">
+      <defs>
+        <pattern id="dotPattern" width="32" height="32" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="2" fill="#FCA31123" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dotPattern)" />
+    </svg>
+    <svg class="bg-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 140"><path fill="#e5e5e5" fill-opacity="0.54" d="M0,80L80,106.7C160,133,320,187,480,197.3C640,208,800,176,960,149.3C1120,123,1280,101,1360,90.7L1440,80L1440,140L1360,140C1280,140,1120,140,960,140C800,140,640,140,480,140C320,140,160,140,80,140L0,140Z"></path></svg>
+  </div>
+  
+  <nav>
+    <ul>
+      <li><a href="index.html#home" class="nav-link">Home</a></li>
+      <li><a href="index.html#about" class="nav-link">About</a></li>
+      <li><a href="index.html#work" class="nav-link">Work</a></li>
+      <li><a href="index.html#skills" class="nav-link">Skills</a></li>
+      <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main style="padding-top: 80px; max-width: 1200px; margin: 0 auto;">
+    <section>
+      <div class="project-header">
+        <h1 class="project-title" id="projectTitle">Project Gallery</h1>
+        <a href="index.html#work" class="back-btn">Back to Portfolio</a>
+      </div>
+      
+      <div id="projectGallery" class="project-gallery">
+        <div class="loading">Loading gallery...</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox for image preview -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightboxClose">&times;</span>
+    <img id="lightboxImg" src="" alt="Enlarged image">
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Pranita Worlikar. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Parse the URL parameters to get folder path
+    function getQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        folderPath: params.get('folder'),
+        title: params.get('title')
+      };
+    }
+
+    // Function to load images from the server
+    async function loadImages() {
+      const { folderPath, title } = getQueryParams();
+      
+      if (!folderPath) {
+        document.getElementById('projectGallery').innerHTML = '<p>Error: No folder specified</p>';
+        return;
+      }
+
+      // Update the page title with the project name
+      if (title) {
+        document.getElementById('projectTitle').textContent = decodeURIComponent(title);
+        document.title = `${decodeURIComponent(title)} | Pranita Worlikar`;
+      } else {
+        // If no title is provided, use the folder name as the title
+        const folderName = folderPath.split('/').pop();
+        document.getElementById('projectTitle').textContent = folderName;
+        document.title = `${folderName} | Pranita Worlikar`;
+      }
+
+      try {
+        // This is a client-side implementation that lists images based on a common pattern
+        // In a real scenario, you would need a server-side script to list files
+        
+        const galleryElement = document.getElementById('projectGallery');
+        galleryElement.innerHTML = '';
+        
+        // Get the list of files for the specified folder
+        const files = await simulateFetchFiles(folderPath);
+        
+        if (files.length === 0) {
+          galleryElement.innerHTML = '<p>No images found in this folder</p>';
+          return;
+        }
+        
+        // Show a loading message while images load
+        const loadingStatus = document.createElement('div');
+        loadingStatus.className = 'loading';
+        loadingStatus.textContent = `Loading ${files.length} images...`;
+        galleryElement.appendChild(loadingStatus);
+        
+        let loadedCount = 0;
+        const totalCount = files.length;
+        
+        // Create a promise for all images to load
+        const imagePromises = files.map(file => {
+          return new Promise((resolve) => {
+            const imgPath = `${folderPath}/${file}`;
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            
+            const img = document.createElement('img');
+            img.src = imgPath;
+            img.alt = file.replace(/\.[^/.]+$/, ""); // Remove file extension for alt text
+            
+            // Handle image loading
+            img.onload = () => {
+              loadedCount++;
+              loadingStatus.textContent = `Loading ${loadedCount}/${totalCount} images...`;
+              resolve();
+            };
+            
+            img.onerror = () => {
+              // If image fails to load, add a placeholder
+              img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 100"><rect width="100%" height="100%" fill="%23f0f0f0"/><text x="50%" y="50%" font-family="sans-serif" font-size="12" text-anchor="middle" dominant-baseline="middle">Image not found</text></svg>';
+              img.alt = 'Image not found';
+              loadedCount++;
+              loadingStatus.textContent = `Loading ${loadedCount}/${totalCount} images...`;
+              resolve();
+            };
+            
+            // Add click event for lightbox
+            item.addEventListener('click', () => {
+              document.getElementById('lightboxImg').src = imgPath;
+              document.getElementById('lightbox').style.display = 'flex';
+            });
+            
+            item.appendChild(img);
+            galleryElement.appendChild(item);
+          });
+        });
+        
+        // When all images have loaded (or failed)
+        Promise.all(imagePromises).then(() => {
+          // Remove loading message
+          if (galleryElement.contains(loadingStatus)) {
+            galleryElement.removeChild(loadingStatus);
+          }
+        });
+        
+      } catch (error) {
+        console.error('Error loading images:', error);
+        document.getElementById('projectGallery').innerHTML = `<p>Error loading images: ${error.message}</p>`;
+      }
+    }
+
+    // This function simulates fetching files from the server
+    // In a real scenario, this would be a server-side API call
+    async function simulateFetchFiles(folderPath) {
+      // This is a client-side workaround since we don't have server capabilities
+      // In a real implementation, this would be an AJAX call to a server endpoint
+      
+      // For demonstration purposes, we'll return file names based on the folder path
+      // The actual implementation would need server-side code to list files in a directory
+      
+      // Extract the folder name from the path to simulate different folders
+      const folderName = folderPath.split('/').pop();
+      
+      // Simulate different folders based on the folderPath
+      if (folderPath.includes('Awsmosis')) {
+        return [
+          'Design Work_page-0001.jpg',
+          'Design Work_page-0002.jpg',
+          'Design Work_page-0003.jpg',
+          'Design Work_page-0004.jpg',
+          'Design Work_page-0005.jpg',
+          'Design Work_page-0006.jpg',
+          'Design Work_page-0008.jpg',
+          'Design Work_page-0009.jpg',
+          'Design Work_page-0010.jpg',
+          'Design Work_page-0011.jpg',
+          'Design Work_page-0012.jpg',
+          'Design Work_page-0013.jpg',
+          'Design Work_page-0014.jpg',
+          'Design Work_page-0015.jpg',
+          'D&I poster.png',
+          'Good to Great logo.png',
+          'independence day1.png',
+          'Inspiring My brand.png',
+          'Inspiring My brand2.png',
+          'Inspiring My brand4.png',
+          'Slide1.PNG',
+          'Swastik Visiting card_page-0002.jpg',
+          'WhatsApp Image 2025-04-21 at 1.11.49 PM.jpeg',
+          'WhatsApp Image 2025-04-21 at 1.13.15 PM.jpeg' 
+        ];
+      } else if (folderPath.includes('Ecosan')) {
+        return [
+          'ESF logo flower.png',
+          'Gift Card_page-0001.jpg',
+          'Gift Card_page-0002.jpg',
+          'Gift Card_page-0003.jpg',
+          'Gift Card_page-0004.jpg',
+          'Happy Diwali.png',
+          'Happy Dusshera.png',
+          'Happy Gandhi Jayanti.png',
+          'Independence Day.png',
+          'PARMM Banner_River Day.jpg',
+          'PARMM Certificate.jpg',
+          'PARMM Slogan Banner_Curve_A2 Final.jpg',
+          'PARMM Standee.jpg',
+          'PARMM Trophy.jpg',
+          'PRIF Flex Outline.jpg',
+          'PRIF Standee.jpg',
+          'Slide1.JPG',
+          'Slide2.JPG',
+          'Slide3.JPG',
+          'Swachata Pandhravda Pamplet.jpg',
+          'Swachata Pandhravda.jpg', 
+          '1.png',
+          '2.png', 
+          '3.png',
+          '4.png',
+          '5.png',
+          '6.png',
+          '7.png',
+          '8.png',
+          '9.png',
+          '10.png',
+          '11.png',
+          '1755081199569.jpg'
+        ];
+      } else if (folderPath.includes('Freelance')) {
+        return [
+          'Cafe Cemellia 1.jpg',
+          'Cafe Cemellia 2.jpg',
+          'Cafe Cemellia 3.jpg',
+          'Cafe Ceremila 3.jpg',
+          'Culture Tripping.jpg',
+          'Pyramid cvpg.jpg',
+          'Sea T Visiting cards.jpg', 
+          'cake.jpg',
+          'Evernest Properties 4.jpg',
+          'pranu campian.jpg',
+          'Special Chaha Katta.jpg',
+          'Trace.jpg',
+          'Trace2.jpg',
+          'Trace3.jpg',
+          'TYPO FACE.jpg',
+          'Karjat final print.jpg'
+        ];
+      } else if (folderPath.includes('Figma')) {
+        return [
+          '1 Home Page.png',
+          '1 Profile Home Page.png',
+          '2 Registration Pg.png',
+          '3 Login Pg.png',
+          '4 Event Pg.png',
+          '5 Blog.png',
+          '6 Booking.png',
+          '7 Location.png',
+          '8 QR Code.png',
+          '9 Payment Status.png'
+        ];
+      } else if (folderPath.includes('XD/High Fedility')) {
+        return [
+          'Home Page.png',
+          'Login Page.png',
+          'Payment Details.png',
+          'Product Page-1.png',
+          'Product Page-2.png',
+          'Product Page.png',
+          'Shopping Cart.png',
+          'Thank you Page-1.png',
+          'Thank you Page.png'
+        ];
+      } else if (folderPath.includes('Illustrator')) {
+        return [
+          'Broucher-02.png',
+          'Broucher Design-01.png',
+          'Broucher.png',
+          'Broucher R Fold-01.png',
+          'Broucher_Z Fold.png',
+          'Brush-01.png',
+          'Character Design Jerry.jpg',
+          'Digital Painting-01.png',
+          'Digital Painting.png',
+          'Fruits.png',
+          'Gift Box.png',
+          'Insta Post-01.png',
+          'Insta Post-02.png',
+          'Logo Design.jpg',
+          'Mango.png',
+          'Peer.png',
+          'Perspective Tool.png',
+          'Traditional Men.png',
+          'Visiting Card-011.png',
+          'Visiting Card-012.png',
+          'Visiting Card-01.png'
+        ];
+      } else if (folderPath.includes('Photoshop')) {
+        return [
+          'Angry Bird.jpg',
+          'Baby girl.jpg',
+          'Ball.jpg',
+          'beach.jpg',
+          'Blur hip.jpg',
+          'Blur.jpg',
+          'Blur sketches.jpg',
+          'Characters.jpg',
+          'Chesse.jpg',
+          'Chocolate Bar 3.jpg',
+          'Coffee island.jpg',
+          'Earth.jpg',
+          'Exam_Colour Replacement 1.jpg',
+          'Exam_Colour Replacement 2.jpg',
+          'Exam_Liquify.jpg',
+          'Exam_Matte Painting.jpg',
+          'Exam_Matte Painting.png',
+          'Exam_Vanishing Point.jpg',
+          'Girl1.jpg',
+          'Girl 2.jpg',
+          'Girl 3.jpg',
+          'Girl.jpg',
+          'Layer Masking 2.jpg',
+          'Layer Masking3.jpg',
+          'Liquify Black Hrt 1.jpg',
+          'Magzine Page2.jpg',
+          'Marmaid.jpg',
+          'Movie poster.jpg',
+          'Nail polish.jpg',
+          'Nathi cha nakhara 2.jpg',
+          'Nathi cha nakhara Box.jpg',
+          'Nathi cha nakhara.jpg',
+          'Nathi cha nakhara pouch.jpg',
+          'Orange.jpg',
+          'Orange layer Masking.jpg',
+          'Oreo.jpg',
+          'Papper Bag 2.jpg',
+          'Play Cards.jpg',
+          'Rain Bushes 2.jpg',
+          'Rain Bushes.jpg',
+          'SKR2.jpg',
+          'Sprite.jpg',
+          'The Store Room.jpg',
+          'Wine Glass.jpg'
+        ];
+      } else {
+        // Default case or other folders
+        return [
+          'image1.jpg',
+          'image2.jpg',
+          'image3.jpg'
+        ];
+      }
+    }
+
+    // Initialize lightbox
+    document.getElementById('lightboxClose').addEventListener('click', () => {
+      document.getElementById('lightbox').style.display = 'none';
+    });
+
+    // Close lightbox when clicking outside the image
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('lightbox')) {
+        document.getElementById('lightbox').style.display = 'none';
+      }
+    });
+
+    // Load images when the page is loaded
+    window.addEventListener('DOMContentLoaded', loadImages);
+  </script>
+</body>
+</html>

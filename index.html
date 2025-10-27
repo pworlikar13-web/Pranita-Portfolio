@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pranita Worlikar – Graphic Design Portfolio, UI/UX, Corporate Design, and Visual Identity">
+  <title>Pranita Worlikar | Digital Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="bg-decoration">
+    <!-- SVG dots and wave background -->
+    <svg class="bg-dots" width="100%" height="100%">
+      <defs>
+        <pattern id="dotPattern" width="32" height="32" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="2" fill="#FCA31123" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dotPattern)" />
+    </svg>
+    <svg class="bg-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 140"><path fill="#e5e5e5" fill-opacity="0.54" d="M0,80L80,106.7C160,133,320,187,480,197.3C640,208,800,176,960,149.3C1120,123,1280,101,1360,90.7L1440,80L1440,140L1360,140C1280,140,1120,140,960,140C800,140,640,140,480,140C320,140,160,140,80,140L0,140Z"></path></svg>
+  </div>
+  
+  <nav>
+    <ul>
+      <li><a href="#home" class="nav-link">Home</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#work" class="nav-link">Work</a></li>
+      <li><a href="#skills" class="nav-link">Skills</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="hero-content">
+      <h1>Pranita Worlikar</h1>
+      <h2>Graphic Designer | Branding & Visual Communication Specialist</h2>
+      <p class="hero-tagline">Crafting Tomorrow's Digital Products, Today.</p>
+    </div>
+  </header>
+
+  <section id="about">
+    <h3>About</h3>
+    <p>
+      Highly creative and results-oriented Graphic Designer with 7+ years in visual communication, branding, print, and UI/UX. Skilled in Photoshop, Illustrator, CorelDRAW, Figma, and Adobe XD. Led projects from concept to delivery—ensuring brand consistency and high-quality outcomes. Currently pursuing UI/UX and AI Career Accelerator certification.
+    </p>
+    <small>Based in Navi Mumbai | Passionate about Art & Design Innovation</small>
+  </section>
+
+  <section id="work">
+    <h3>Portfolio</h3>
+    <div class="portfolio-tabs">
+      <button class="tab-btn active" data-tab="uiux">UI/UX Design</button>
+      <button class="tab-btn" data-tab="corporate">Corporate Design</button>
+      <button class="tab-btn" data-tab="freelance">Freelance Work</button>
+    </div>
+    <!-- UI/UX: 6 linked projects -->
+    <div class="tab-content" id="uiux">
+      <div class="portfolio-grid">
+        <a href="project-view.html?folder=assets/UIUX%20Design/Photoshop&title=Photoshop" class="portfolio-card"><img src="assets/UIUX Design/Photoshop/Coffee island.jpg" alt="Photoshop"><div class="overlay">Photoshop</div></a>
+        <a href="project-view.html?folder=assets/UIUX%20Design/Illustrator&title=Illustrator" class="portfolio-card"><img src="assets/UIUX Design/Illustrator/Insta Post-01.png" alt="Illustrator"><div class="overlay">Illustrator</div></a>
+        <a href="project-view.html?folder=assets/UIUX%20Design/XD/High%20Fedility&title=Adobe%20XD" class="portfolio-card"><img src="assets/UIUX Design/XD/High Fedility/Home Page.png" alt="Adobe XD"><div class="overlay">Adobe XD</div></a>
+        <a href="project-view.html?folder=assets/UIUX%20Design/Figma&title=Figma" class="portfolio-card"><img src="assets/UIUX Design/Figma/1 Home Page.png" alt="Figma"><div class="overlay">Figma</div></a>
+        <a href="project-view.html?folder=assets/UIUX%20Design/HTML%20CSS%20Bootstrap%205%20Submission&title=HTML%2C%20CSS%2C%20Bootstrap" class="portfolio-card"><img src="assets/UIUX Design/XD/High Fedility/Shopping Cart.png" alt="HTML, CSS, Bootstrap"><div class="overlay">HTML, CSS, Bootstrap</div></a>
+      </div>
+    </div>
+    <!-- Corporate: 2 linked projects -->
+    <div class="tab-content" id="corporate" style="display:none;">
+      <div class="portfolio-grid">
+        <a href="project-view.html?folder=assets/Corporate%20Design/Awsmosis&title=Awsmosis" class="portfolio-card"><img src="assets/Corporate Design/Awsmosis/D&I poster.png" alt="Corporate Project 1"><div class="overlay">Awsmosis</div></a>
+        <a href="project-view.html?folder=assets/Corporate%20Design/Ecosan%20Foundation&title=Ecosan%20Campaign%20Design" class="portfolio-card"><img src="assets/Corporate Design/Ecosan Foundation/Happy Diwali.png" alt="Corporate Project 2"><div class="overlay">Ecosan Campaign Design</div></a>
+      </div>
+    </div>
+    <!-- Freelance: 1 example -->
+    <div class="tab-content" id="freelance" style="display:none;">
+      <div class="portfolio-grid">
+        <a href="project-view.html?folder=assets/Freelance%20Work&title=Caf%C3%A9%20Camellia%20Identity" class="portfolio-card"><img src="assets/Freelance Work/Cafe Cemellia 1.jpg" alt="Café Camellia"><div class="overlay">Café Camellia Identity</div></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h3>Skills</h3>
+    <div class="skills-wrapper">
+      <div>
+        <h4>Design & Tools</h4>
+        <div class="skills-icons">
+          <span class="skill">CorelDRAW</span>
+          <span class="skill">Photoshop</span>
+          <span class="skill">Illustrator</span>
+          <span class="skill">Figma</span>
+          <span class="skill">Adobe XD</span>
+          <span class="skill">HTML</span>
+          <span class="skill">CSS</span>
+          <span class="skill">Bootstrap</span>
+          <span class="skill">MS Office Suite</span>
+        </div>
+      </div>
+      <div>
+        <h4>Branding & Visuals</h4>
+        <div class="skills-icons">
+          <span class="skill">Logo Design</span>
+          <span class="skill">Marketing Collateral</span>
+          <span class="skill">Presentation Design</span>
+          <span class="skill">Training Materials</span>
+        </div>
+      </div>
+      <div>
+        <h4>Print & Production</h4>
+        <div class="skills-icons">
+          <span class="skill">Layout Design</span>
+          <span class="skill">Print-Ready Outputs</span>
+          <span class="skill">Vendor Coordination</span>
+        </div>
+      </div>
+      <div>
+        <h4>Soft Skills</h4>
+        <div class="skills-icons">
+          <span class="skill">Leadership</span>
+          <span class="skill">Client Communication</span>
+          <span class="skill">Team Management</span>
+          <span class="skill">Time Management</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <h3>Experience</h3>
+    <div class="experience-timeline">
+      <div class="timeline-card">
+        <h4>TMTR Solutions Pvt Ltd</h4>
+        <small>Graphic Designer & Trainer Coordinator (2025–Present)</small>
+        <p>Led the creative design and branding of corporate training materials, crafting a cohesive and professional visual identity. Collaborated closely with the digital marketing team to ensure brand consistency across all campaigns and platforms. Managed end-to-end coordination with 300+ soft skills trainers, streamlining communication and ensuring smooth execution of training requirements.</p>
+      </div>
+      <div class="timeline-card">
+        <h4>Ecosan Services Foundation</h4>
+        <small>Graphic Designer (2025–Present)</small>
+        <p>Led the visual communication design for Project PARMM, supporting public engagement and awareness through cohesive branding across print and digital platforms.
+Refined ESF’s brand identity — from logo and brand guidelines to corporate stationery and marketing collaterals. Designed website layouts, reports, and digital campaigns that enhanced brand consistency and strengthened the organization’s visual storytelling across all communication channels.</p>
+      </div>
+      <div class="timeline-card">
+        <h4>Awsmosis Learning & People Solutions Pvt Ltd</h4>
+        <small>COE-Assistant Manager (2018–2025)</small>
+        <p>Led end-to-end design and branding initiatives for corporate training and marketing projects, shaping cohesive visual identities that enhanced engagement and brand presence. Managed design production from concept to print, guiding a junior designer and ensuring high-quality outputs across all media.
+Developed impactful visual assets — from event branding, posters, and presentations to logos, reports, and social media campaigns. Maintained brand consistency through close collaboration with clients and internal teams.
+Supported CRM and communication design, handled training logistics, and oversaw assessment centre coordination and budgets — blending creative direction with operational precision to deliver seamless, high-impact outcomes.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="achievements">
+    <h3>Achievements</h3>
+    <ul class="achievements-list">
+      <li><span class="achievement-icon">🏆</span> Employee of the Month</li>
+      <li><span class="achievement-icon">🏆</span> Gold Star (x2) – For design quality</li>
+      <li><span class="achievement-icon">🏆</span> Silver Star (x2) – For teamwork/reliability</li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <h3>Contact</h3>
+    <div class="contact-details">
+      <p>Email: <a href="mailto:pworlikar13@gmail.com">pworlikar13@gmail.com</a></p>
+      <p>Phone: <a href="tel:+917755938925">+91 77559 38925</a></p>
+      <p>Location: Navi Mumbai, Maharashtra</p>
+      <p><a href="Pranita_Resume_Mumbai.docx" class="resume-download-btn" download>Download Resume</a></p>
+    </div>
+    <form class="contact-form">
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <textarea name="message" placeholder="Message" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Pranita Worlikar. All rights reserved.</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
